@@ -1,0 +1,158 @@
+Internet : A global system of interconnected computer networks that use the TCP/IP protocol.
+
+Interesting : All Internets are networks, but not all networks are the Internet.
+
+Where the Internet comes from are they belongs to Jio or Airtel lets find out
+
+The Internet is a web of cables, primarily optical fiber cables, through which data is transmitted.
+
+Internet Infrastructure Explained:
+
+✅ Tier 1 – Companies that own undersea fiber-optic cables and lease them to others. be proud TATA is one of them .These cables run across land and oceans, facilitating global connectivity. (B2B Model)
+
+✅ Tier 2 – Providers like BSNL, Jio, and others who purchase bandwidth from Tier 1 companies to distribute further. (B2B Model)
+
+✅ Tier 3 – Service providers such as Jio Fiber, Airtel Fiber, and You Broadband that deliver internet to end-users (homes & businesses). (B2C Model)
+
+How Tier 3 works ?
+
+The below image represents different types of networks based on their coverage area:
+
+1️⃣ LAN (Local Area Network) – Used in a house or small office for connecting devices like computers, printers, and routers.
+
+2️⃣ MAN (Metropolitan Area Network) – Covers a city, connecting multiple LANs, such as university campuses or city-wide internet services.
+
+3️⃣ WAN (Wide Area Network) – Spans across a country or globally, connecting multiple MANs and LANs, like the Internet itself.
+
+📌 Summary:
+
+LAN (House) → Smallest network
+
+MAN (City) → Medium-sized network
+
+WAN (Country) → Largest network
+
+Why Networking is Crucial for DevOps Engineers?
+
+Networking plays a vital role in DevOps, serving as the backbone of modern IT infrastructure. It enables seamless communication between systems and services, ensuring smooth operations. Here’s why networking is essential for DevOps:
+
+✅ Efficient Collaboration – Ensures smooth interaction between development, operations, and infrastructure teams.
+✅ Scalability – Supports the growth of applications and services without performance issues.
+✅ Security – Helps protect data, applications, and networks from cyber threats.
+✅ Automation – Enables infrastructure as code (IaC) and automated deployments.
+✅ Troubleshooting – Assists in diagnosing and resolving connectivity and performance issues.
+✅ Cloud Integration – Facilitates connectivity between on-premises and cloud environments.
+
+In short, mastering networking is essential for DevOps engineers to build, deploy, and maintain secure, scalable, and efficient systems.
+
+OSI (Open Systems Interconnection)
+
+For DevOps professionals, understanding the OSI model their 7 layers is crucial for designing, deploying, and troubleshooting networked systems its a theoretical version .
+
+The TCP/IP (Transmission Control Protocol/Internet Protocol) model is the foundation of the internet and modern networking. It defines how data is transmitted across networks and ensures seamless communication between devices.
+
+TCP/IP Model Layers & Functions
+
+1️⃣ Application Layer
+
+Provides services to end-users (e.g., web browsing, email, file transfer).
+
+Protocols: HTTP, HTTPS, FTP, SMTP, DNS
+
+2️⃣ Transport Layer
+
+Manages end-to-end communication between devices.
+
+Protocols: TCP (reliable), User Datagram Protocol (fast but unreliable)
+
+3️⃣ Internet Layer
+
+Handles IP addressing and routing to send data across networks.
+
+Protocols: IP, ICMP, ARP
+
+4️⃣ Network Access Layer (Link Layer)
+
+Defines how data is physically transmitted over a medium (Ethernet, Wi-Fi).
+
+Protocols: Ethernet, Wi-Fi, MAC, PPP.
+
+TCP/IP Model vs. OSI Model
+
+Both the TCP/IP model and the OSI (Open Systems Interconnection) model describe how data travels over a network. However, they differ in structure and functionality.
+
+✔ TCP/IP is widely used in real-world networks, while OSI is more theoretical.
+✔ TCP/IP has 4 layers, whereas OSI has 7.
+✔ OSI helps understand networking concepts in detail, but TCP/IP is the standard for the internet.
+
+Flow of TCP/IP
+
+MAC/IP/Router/Switches
+
+🔹 MAC Address (Media Access Control)
+
+It's like your device's fingerprint (unique to each device).
+
+Used within a local network (LAN).
+
+Example: A laptop’s MAC address is like its permanent name tag in a Wi-Fi network.
+
+🔹 IP Address (Internet Protocol)
+
+It's like your home address on the internet.
+
+Helps devices communicate globally over the internet.
+
+Example: A website’s IP (e.g., 192.168.1.1) is like a house address used for sending data.
+
+🔹 Router
+
+Think of it as a post office 📬.
+
+Connects different networks (like home Wi-Fi to the internet).
+
+Assigns IP addresses and directs internet traffic.
+
+Example: When you visit Google, your router forwards the request to Google’s server.
+
+🔹 Switch
+
+Works like a traffic cop 🚦 but only inside a building.
+
+Connects multiple devices in a LAN (like computers in an office).
+
+Uses MAC addresses to send data only to the intended device.
+
+Example: In an office network, a switch ensures your printer request goes only to the printer, not other devices.
+
+What is a Protocol & Port?
+
+A protocol is a set of rules that devices follow to communicate over a network. Think of it like a language—just as people use different languages to communicate, computers use different protocols for different tasks.
+
+A port is like a door in a building. It helps direct network traffic to the right place on a computer. Each protocol has a specific port number to handle its communication.
+
+Common Protocols
+
+HTTP: 80
+
+HTTPS: 443
+
+FTP: 21
+
+SSH: 22
+
+DNS: 53
+
+SMTP: 25
+
+POP3: 110
+
+💡 Simple Example:
+
+Imagine you visit www.example.com on your browser.
+
+Your browser uses HTTP (port 80) to send a request.
+
+The web server receives the request on port 80 and sends the webpage back to you.
+
+Just like different services in a hotel (room service, reception, housekeeping) have specific phone extensions, each protocol has a port number to ensure the request goes to the right place.
