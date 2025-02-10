@@ -50,4 +50,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 #   ForceCommand cvs server
 
 DenyUsers devops_user
+''shh
+
+
 
