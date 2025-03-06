@@ -1,126 +1,155 @@
-# Docker Notes for DevOps Beginners
+# Docker Notes for DevOps (Basic to Advanced)
 
-## Introduction to Docker
+## **Introduction to Docker**
+Docker is a **containerization** platform that enables developers to package applications and their dependencies into isolated environments known as containers.
 
-### Virtualization vs Containerization
-- **VirtualBox**: Used to run Linux on Windows (Full OS Virtualization)
-  - Costly
-  - Requires more resources
-- **Docker (Containerization)**:
-  - More cost-effective than VirtualBox
-  - Runs on top of the OS as a **Docker Engine**
-  - Talks directly to the **kernel**, creates **containers**, and uses **shared resources**
+### **Virtualization vs. Containerization**
+- **Virtualization** (e.g., VirtualBox): Runs an entire OS on top of another OS, which is resource-heavy.
+- **Containerization** (e.g., Docker): Shares the host OS kernel, making it lightweight and efficient.
 
-### Docker Components
-- **Docker**: The core containerization tool
-- **containerd**: The heart of Docker responsible for container execution
-- **dockerd**: A background process that manages containerd
-- **Docker CLI**: Interface to interact with Docker
-- **Docker Client**: Used to send commands to Docker
-- **Docker App**: A container engine to manage applications
+### **Docker Architecture**
+1. **Docker Engine** - Runs on the OS to create and manage containers.
+2. **Containerd** - The core container runtime that manages the lifecycle of containers.
+3. **Docker Daemon (dockerd)** - Background process that communicates with containerd.
+4. **Docker CLI** - Command-line interface to interact with Docker.
+5. **Docker Client** - Used to manage and communicate with Docker Daemon.
 
-## Basic Docker Commands
+---
+
+## **Docker Basic Commands**
+### **Checking Docker Status**
 ```sh
-# Show running containers
-$ docker ps
+docker ps        # Shows running containers
+docker ps -a     # Shows all containers (running + stopped)
 ```
 
-### Fixing Permission Issues
-If you see **permission denied**, check the Docker group:
+### **Fixing Permission Issues**
 ```sh
-$ cat /etc/group
-```
-If Docker does not have a group, add the current user:
-```sh
-$ sudo usermod -aG docker $USER
-$ newgrp docker  # Refresh the group permissions
+sudo usermod -aG docker $USER  # Add current user to the Docker group
+newgrp docker                   # Refresh group membership
 ```
 
-## Creating Docker Containers
-### Method 1: Using a Dockerfile
-1. **Create a Dockerfile** to define the container image (acts as a blueprint)
-2. **Build the image** from the Dockerfile
-3. **Run the container** using the created image
-
-### Method 2: Pulling an Image from Docker Hub
-1. **Pull an image** directly from Docker Hub
-2. **Run the container** using the pulled image
-
-## Running a Docker Container
-```sh
-# Run a basic Ubuntu container interactively
-$ docker run -it ubuntu
-
-# Run an Nginx container with port mapping
-$ docker run -p 80:80 nginx
-
-# List all running containers (including stopped ones)
-$ docker ps -a
-```
-
-### Running Containers in the Background
-```sh
-# Run a container in detached mode
-$ docker run -d -p 80:80 my-app
-```
-
-## Understanding Builds in Docker
-- **Build Process**: Compilation of code into an executable application
-- Different languages have different build tools:
-  - **.NET** → MSBuild
-  - **Java** → Maven
-  - **Node.js** → npm
-  - **Python** → pip
-
-## Creating a Dockerfile
-### Syntax:
-```dockerfile
-# Base image
+### **Creating Docker Containers**
+#### **Method 1: Using a Dockerfile**
+1. **Create a Dockerfile:**
+```Dockerfile
 FROM ubuntu:latest
-
-# Set working directory
 WORKDIR /app
-
-# Copy application files
-COPY foldername/filename /tofile/filename
-
-# Install dependencies or compile code
-RUN javac Main.java
-
-# Expose a port (optional)
-EXPOSE 8080
-
-# Command to run application
-CMD ["java", "Main"]
+COPY . /app
+RUN apt-get update && apt-get install -y python3
+CMD ["python3", "app.py"]
 ```
-
-## Running Docker Commands
+2. **Build and run the container:**
 ```sh
-# Build an image
-$ docker build -t my-image:latest .
-
-# List Docker images
-$ docker images
-
-# Run the container from an image
-$ docker run -d -p 80:80 my-app
-
-# Stop a running container
-$ docker stop <container-id>
-
-# Remove a stopped container
-$ docker rm <container-id>
-
-# View container logs
-$ docker logs <container-id>
-
-# Clean up unused containers and images
-$ docker system prune
+docker build -t myapp:latest .
+docker run -d -p 8080:80 myapp:latest
 ```
 
-### Important Note
-Whenever you **modify or add new code**, you **must rebuild** the Dockerfile:
+#### **Method 2: Without a Dockerfile**
 ```sh
-$ docker build -t my-image:latest .
+docker pull nginx  # Pull image from Docker Hub
+docker run -p 80:80 nginx  # Run container
 ```
+
+### **Stopping and Removing Containers**
+```sh
+docker stop <container_id>  # Stop a running container
+docker rm <container_id>    # Remove a stopped container
+docker system prune -a      # Remove all stopped containers and images
+```
+
+---
+
+## **Building and Managing Docker Images**
+```sh
+docker build -t myapp:v1 .      # Build an image
+docker images                   # List all images
+docker rmi <image_id>           # Remove an image
+docker tag myapp:v1 myrepo/myapp:v1  # Tag an image
+docker push myrepo/myapp:v1      # Push image to Docker Hub
+```
+
+---
+
+## **Multi-Stage Docker Builds**
+Multi-stage builds allow for smaller and more secure images.
+
+### **Example:**
+```Dockerfile
+# Stage 1: Build dependencies
+FROM python:3.9-slim AS builder
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt --target=/app/deps
+
+# Stage 2: Minimal runtime image
+FROM gcr.io/distroless/python3-debian12
+WORKDIR /app
+COPY --from=builder /app/deps /app/deps
+COPY --from=builder /app .
+ENV PYTHONPATH="/app/deps"
+CMD ["python3", "app.py"]
+```
+**Building the Multi-Stage Image:**
+```sh
+docker build -t python-app-mini .
+```
+
+---
+
+## **Docker Networking**
+### **Types of Docker Networks:**
+1. **Bridge (default)** - Connects containers via an internal network.
+2. **Host** - Uses the host’s network (no port mapping required).
+3. **None** - Completely isolated.
+4. **User-defined Bridge** - Custom network with better container communication.
+5. **Macvlan** - Assigns a MAC address to a container for direct host communication.
+6. **Overlay** - Used in Docker Swarm for multi-host networking.
+
+### **Docker Networking Commands**
+```sh
+docker network ls       # List networks
+docker network inspect <network_id>  # Inspect network
+docker network create my_network  # Create a custom network
+docker run --network=my_network nginx  # Attach container to a network
+```
+
+---
+
+## **Docker Volumes (Persistent Storage)**
+Volumes are used to store data outside of containers.
+
+```sh
+docker volume create my_volume  # Create a volume
+docker volume ls                # List volumes
+docker run -d -v my_volume:/data mysql  # Attach volume to a container
+docker volume inspect my_volume  # Get volume details
+```
+
+---
+
+## **Pushing and Pulling Docker Images**
+```sh
+docker login
+# Tag and push image
+
+docker tag myapp:v1 mydockerhubusername/myapp:v1
+docker push mydockerhubusername/myapp:v1
+
+docker pull mydockerhubusername/myapp:v1  # Pull from Docker Hub
+```
+
+---
+
+## **Advanced Docker Commands**
+```sh
+docker ps -aq           # Get all container IDs
+docker rm $(docker ps -aq)  # Remove all stopped containers
+docker images -aq       # Get all image IDs
+docker rmi $(docker images -aq)  # Remove all images
+```
+
+---
+
+
 
