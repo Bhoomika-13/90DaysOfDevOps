@@ -139,6 +139,213 @@ docker push mydockerhubusername/myapp:v1
 docker pull mydockerhubusername/myapp:v1  # Pull from Docker Hub
 ```
 
+Docker Compose: Simplifying Container Management
+
+What is Docker Compose?
+
+Docker Compose is a tool that helps you build images and run containers using a single YAML configuration file (docker-compose.yml). It allows you to define multiple services, manage dependencies, set up networking, and automate container startup.
+
+YAML File Basics
+
+YAML (.yml) is a configuration file format that uses key-value pairs and objects to define services, networks, and volumes.
+
+Basic Structure of docker-compose.yml
+
+version: '3.8'  # Define the Docker Compose version
+
+services:   # Define all container services here
+
+  mysql:
+    image: mysql:5.7   # Use MySQL version 5.7
+    container_name: mysql
+    environment:  # Set up database environment variables
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: tws_db
+    volumes:
+      - ./mysql_data_new:/var/lib/mysql  # Persistent storage for MySQL
+    networks:
+      - twotier
+    ports:
+      - "3306:3306"  # Map MySQL port
+    healthcheck:  # Ensure MySQL is ready before dependent services start
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-padmin"]
+      interval: 10s
+      retries: 5
+      start_period: 60s
+      timeout: 5s
+
+  flaskapp:
+    build:  # Build the Flask app if no image exists
+      context: .  # Use the Dockerfile in the same directory
+    container_name: flaskapp
+    environment:
+      MYSQL_PASSWORD: admin
+      MYSQL_USER: root
+      MYSQL_HOST: mysql
+      MYSQL_DB: tws_db
+    networks:
+      - twotier
+    ports:
+      - "5000:5000"  # Expose Flask app on port 5000
+    depends_on:  # Ensure MySQL starts before Flask
+      - mysql
+    restart: always  # Restart the container on failure
+
+volumes:
+  mysql_data_new:  # Define persistent volume for MySQL
+
+networks:
+  twotier:  # Define a custom bridge network
+
+
+Common Docker Compose Commands
+
+Command
+
+Description
+
+docker compose up -d
+
+Start all services in detached mode
+
+docker compose down
+
+Stop and remove all containers
+
+docker compose ps
+
+List running containers
+
+docker compose logs -f
+
+View live logs
+
+docker compose restart service_name
+
+Restart a specific service
+
+docker compose exec service_name bash
+
+Access the container’s shell
+
+Important Notes
+
+✔ If you fix errors or modify the configuration, stop the container using:
+🔹 docker compose down before restarting with docker compose up -d.
+
+✔ Install Docker Compose (if not installed):
+🔹 sudo apt-get install docker-compose
+
+✔ Docker Scout can be used for image security analysis:
+🔹 docker scout quickview image_name
+
+This setup ensures automatic dependency management, persistent storage, and smooth orchestration of multiple services in a two-tier application. 🚀
+
+Let me know if you need any refinements! 😊Docker Compose: Simplifying Container Managemen
+
+What is Docker Compose?
+
+Docker Compose is a tool that helps you build images and run containers using a single YAML configuration file (docker-compose.yml). It allows you to define multiple services, manage dependencies, set up networking, and automate container startup.
+
+YAML File Basics
+
+YAML (.yml) is a configuration file format that uses key-value pairs and objects to define services, networks, and volumes.
+
+Basic Structure of docker-compose.yml
+
+version: '3.8'  # Define the Docker Compose version
+
+services:   # Define all container services here
+
+  mysql:
+    image: mysql:5.7   # Use MySQL version 5.7
+    container_name: mysql
+    environment:  # Set up database environment variables
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: tws_db
+    volumes:
+      - ./mysql_data_new:/var/lib/mysql  # Persistent storage for MySQL
+    networks:
+      - twotier
+    ports:
+      - "3306:3306"  # Map MySQL port
+    healthcheck:  # Ensure MySQL is ready before dependent services start
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-padmin"]
+      interval: 10s
+      retries: 5
+      start_period: 60s
+      timeout: 5s
+
+  flaskapp:
+    build:  # Build the Flask app if no image exists
+      context: .  # Use the Dockerfile in the same directory
+    container_name: flaskapp
+    environment:
+      MYSQL_PASSWORD: admin
+      MYSQL_USER: root
+      MYSQL_HOST: mysql
+      MYSQL_DB: tws_db
+    networks:
+      - twotier
+    ports:
+      - "5000:5000"  # Expose Flask app on port 5000
+    depends_on:  # Ensure MySQL starts before Flask
+      - mysql
+    restart: always  # Restart the container on failure
+
+volumes:
+  mysql_data_new:  # Define persistent volume for MySQL
+
+networks:
+  twotier:  # Define a custom bridge network
+
+
+Common Docker Compose Commands
+
+Command
+
+Description
+
+docker compose up -d
+
+Start all services in detached mode
+
+docker compose down
+
+Stop and remove all containers
+
+docker compose ps
+
+List running containers
+
+docker compose logs -f
+
+View live logs
+
+docker compose restart service_name
+
+Restart a specific service
+
+docker compose exec service_name bash
+
+Access the container’s shell
+
+Important Notes
+
+✔ If you fix errors or modify the configuration, stop the container using:
+🔹 docker compose down before restarting with docker compose up -d.
+
+✔ Install Docker Compose (if not installed):
+🔹 sudo apt-get install docker-compose
+
+✔ Docker Scout can be used for image security analysis:
+🔹 docker scout quickview image_name
+
+
 ---
 
 ## **Advanced Docker Commands**
